@@ -2,7 +2,6 @@ PImage footOutline, footLogo;
 List<UIButton> buttons;
 Graph graph;
 HelmetVisual helmetVisual;
-HelmetCollision helmetCollision;
 
 static DataProcessor dataProcessor;
 
@@ -10,6 +9,7 @@ PImage helmetLogo, accidentLogo;
 boolean crashDetected = false;
 boolean showSOSPopup = false;
 boolean showHelpPopup = false;
+boolean isDarkMode = false; 
 
 UIButton sosButton;
 UIButton yesButton;
@@ -28,16 +28,15 @@ void setup() {
     accidentLogo = loadImage("crash.png");
 
     buttons = new ArrayList<>();
-    buttons.add(new UIButton(.025*width, height-210, .45*width, 200, "Day Mode", color(220,220,220)));
-    //buttons.add(new UIButton(.525*width, height-210, .45*width, 200, "Back", color(220,220,220)));
-    
-    UIButton settingsBtn = new UIButton(.78*width, .12*height, 80, 80, "Settings", color(175,175,175));
+    UIButton dayModeBtn = new UIButton(.025 * width, height - 210, .45 * width, 200, "Day Mode", color(220, 220, 220));
+    buttons.add(dayModeBtn);
+
+    UIButton settingsBtn = new UIButton(.78 * width, .12 * height, 80, 80, "Settings", color(175, 175, 175));
     buttons.add(settingsBtn);
     settingsBtn.setImage("helmet.png");
 
     graph = new Graph();
     helmetVisual = new HelmetVisual();
-    helmetCollision = new HelmetCollision();
     dataProcessor = new DataProcessor();
     DataConnection.prepare(this, dataProcessor);
 
@@ -64,7 +63,7 @@ void draw() {
 }
 
 void drawMainScreen() {
-    background(240);
+    background(isDarkMode ? 50 : 240); 
 
     drawTopBar();
 
@@ -74,12 +73,11 @@ void drawMainScreen() {
 
     DataConnection.update();
     helmetVisual.draw();
-    helmetCollision.draw();
 }
 
 void drawTopBar() {
     push();
-    fill(32, 92, 122);
+    fill(isDarkMode ? 20 : 32, isDarkMode ? 20 : 92, isDarkMode ? 20 : 122);
     rect(0, 0, width, .1 * height);
 
     fill(255, 255, 255);
@@ -130,6 +128,8 @@ void drawCrashMode() {
     }
 
     drawTopBar();
+
+ 
     exitButton.draw();
 }
 
@@ -153,16 +153,18 @@ void mousePressed() {
         if (exitButton.isClicked(mouseX, mouseY)) {
             println("Exiting Crash Mode...");
             crashDetected = false;
-            title = "Smart Helmet";
+            title = "Smart Helmet"; 
         }
     } else {
         for (int i = 0; i < buttons.size(); i++) {
             UIButton button = buttons.get(i);
 
             if (button.isClicked(mouseX, mouseY)) {
-                if (i == 0) {
-                    println("day night mode");
-                } else if (i == 2) {
+                if (i == 0) { 
+                    isDarkMode = !isDarkMode;
+                    button.Text = isDarkMode ? "Night Mode" : "Day Mode"; 
+                    println(isDarkMode ? "Switched to Night Mode" : "Switched to Day Mode");
+                } else if (i == 1) {
                     println("clicked settings");
                     showSOSPopup = true;
                 }
@@ -170,6 +172,7 @@ void mousePressed() {
         }
     }
 }
+
 
 void serialEvent(Serial p) {
     DataConnection.onSerialEvent(p);
