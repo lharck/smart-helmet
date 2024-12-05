@@ -30,7 +30,7 @@ class HelmetCollision {
     
     // gets whether there is a collision at each sensor
     boolean[] getCollisions(){
-        return new boolean[]{isColliding(0), isColliding(1), isColliding(2), isColliding(3)};
+        return new boolean[]{isCollidingAt(0), isCollidingAt(1), isCollidingAt(2), isCollidingAt(3)};
     }
     
     // sets a pressure state

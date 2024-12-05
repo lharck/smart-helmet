@@ -8,7 +8,7 @@ static DataProcessor dataProcessor;
 
 PImage helmetLogo, accidentLogo;
 boolean crashDetected = false;
-boolean showSOSPopup = false;
+boolean showSOSPopup = true;
 boolean showHelpPopup = false;
 
 UIButton sosButton;
@@ -33,7 +33,7 @@ void setup() {
     
     UIButton settingsBtn = new UIButton(.78*width, .12*height, 80, 80, "Settings", color(175,175,175));
     buttons.add(settingsBtn);
-    settingsBtn.setImage("helmet.png");
+    settingsBtn.setImage("cog.png");
 
     graph = new Graph();
     helmetVisual = new HelmetVisual();
@@ -41,7 +41,7 @@ void setup() {
     dataProcessor = new DataProcessor();
     DataConnection.prepare(this, dataProcessor);
 
-    sosButton = new UIButton(width * 0.35, height * 0.5, width * 0.3, 50, "SOS", color(255, 100, 100));
+    sosButton = new UIButton(width * 0.35, height * 0.5, width * 0.3, 50, "Off", color(255, 100, 100));
     yesButton = new UIButton(width * 0.3, height * 0.5, width * 0.15, 50, "YES", color(100, 255, 100));
     noButton = new UIButton(width * 0.55, height * 0.5, width * 0.15, 50, "NO", color(255, 100, 100));
     exitButton = new UIButton(width * 0.35, height - 100, width * 0.3, 50, "EXIT", color(255, 255, 100));
@@ -100,7 +100,7 @@ void drawSOSPopup() {
     fill(0);
     textSize(24);
     textAlign(CENTER, CENTER);
-    text("SOS", width * 0.5, height * 0.4);
+    text("Enable SOS Mode?", width * 0.5, height * 0.4);
 
     sosButton.draw();
 }
@@ -134,6 +134,7 @@ void drawCrashMode() {
 }
 
 void mousePressed() {
+    print(showSOSPopup);
     if (showSOSPopup) {
         if (sosButton.isClicked(mouseX, mouseY)) {
             showSOSPopup = false;
@@ -143,7 +144,7 @@ void mousePressed() {
         if (yesButton.isClicked(mouseX, mouseY)) {
             println("Calling for Help...");
             crashDetected = true; 
-            title = "Crash Mode"; 
+            title = "SOS Mode"; 
             showHelpPopup = false;
         } else if (noButton.isClicked(mouseX, mouseY)) {
             println("No help needed.");
