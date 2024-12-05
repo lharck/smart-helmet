@@ -2,6 +2,7 @@ PImage footOutline, footLogo;
 List<UIButton> buttons;
 Graph graph;
 HelmetVisual helmetVisual;
+HelmetCollision helmetCollision;
 
 static DataProcessor dataProcessor;
 PImage helmetLogo;
@@ -18,7 +19,7 @@ void setup() {
 
     buttons = new ArrayList<>();
     buttons.add(new UIButton(.025*width, height-210, .45*width, 200, "Day Mode", color(220,220,220)));
-    buttons.add(new UIButton(.525*width, height-210, .45*width, 200, "Back", color(220,220,220)));
+    //buttons.add(new UIButton(.525*width, height-210, .45*width, 200, "Back", color(220,220,220)));
     
     UIButton settingsBtn = new UIButton(.78*width, .12*height, 80, 80, "Settings", color(175,175,175));
     buttons.add(settingsBtn);
@@ -27,6 +28,7 @@ void setup() {
 
     graph = new Graph();
     helmetVisual = new HelmetVisual();
+    helmetCollision = new HelmetCollision();
     dataProcessor = new DataProcessor();
     DataConnection.prepare(this, dataProcessor);
     
@@ -55,6 +57,7 @@ void drawMainScreen() {
     DataConnection.update();
     updatePressures();
     helmetVisual.draw();
+    helmetCollision.draw();
 }
 
 void mousePressed() {

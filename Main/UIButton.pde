@@ -61,7 +61,6 @@ class UIButton {
     }
  
 
-
     color _darken(color c, float amount) {
       float r = red(c);
       float g = green(c);
